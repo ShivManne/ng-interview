@@ -1,4 +1,61 @@
-<h2>Students</h2>
-<ul>
-	<li>Here are your students...</li>
-</ul>
+<div class="students-list">
+
+	<div class="header">
+		<h2>
+			Students
+		</h2>
+		<div
+			class="filter"
+			ng-if="vm.loadingStudents === false && vm.students.length > 0">
+			<input
+				type="text"
+				placeholder="Filter Students"
+				ng-keyup="vm.filterStudents()"
+				ng-model="vm.filterStudentsQuery"
+				autofocus
+			/>
+		</div>
+		<div class="clear"></div>
+	</div>
+
+	<h4 class="message" ng-show="vm.loadingStudents === true">
+		Loading Students List...
+	</h4>
+
+	<div ng-show="vm.loadingStudents === false">
+
+		<ul ng-show="vm.filteredStudents.length">
+			<li ng-repeat="student in vm.filteredStudents">
+				<a
+					class="name"
+					ng-click="student.toggle = !student.toggle">
+					{{student.FirstName}} {{student.LastName}}
+				</a>
+				<div
+					class="info"
+					ng-show="student.toggle">
+					<table>
+						<tbody>
+							<tr
+								ng-repeat="(key, value) in student"
+								ng-if="key !== 'toggle'">
+								<td>{{key}}</td>
+								<td>{{value}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</li>
+		</ul>
+
+		<h4 class="message" ng-show="!vm.students.length">
+			Students Not Found.
+		</h4>
+
+		<h4 class="message" ng-show="vm.students.length && !vm.filteredStudents.length">
+			No Students Matched with: "{{vm.filterStudentsQuery}}"
+		</h4>
+
+	</div>
+
+</div>

@@ -1,9 +1,11 @@
 (function() {
-	'use strict';
+    'use strict';
 
-	angular.module('ngInterview', [
+    angular.module('ngInterview', [
 		'ngRoute',
+        'ngInterview.autofocus',
 		'ngInterview.currentDate',
-		'ngInterview.students'
+		'ngInterview.students',
+		'ngInterview.httpInterceptor'
 	]);
 })();

@@ -1,1 +1,11 @@
 /* app css stylesheet */
+
+body {
+    background: #eee;
+    font-size: 12px
+}
+
+.clear {
+    clear: both;
+    height: 0px
+}

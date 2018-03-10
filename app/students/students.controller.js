@@ -1,31 +1,57 @@
 (function() {
-	'use strict';
+    'use strict';
 
-	angular
-		.module('ngInterview.students')
-		.controller('StudentsController', StudentsController);
+    angular
+        .module('ngInterview.students')
+        .controller('StudentsController', StudentsController);
 
-	StudentsController.$inject = [];
-	function StudentsController() {
+    StudentsController.$inject = ['StudentsService'];
 
-		/**
-		 * Model
-		 */
+    function StudentsController(StudentsService) {
 
-		var vm = this;
+        /**
+         * Model
+         */
 
-		/**
-		 * Initialization
-		 */
+        var vm = this;
 
-		activate();
+        vm.filterStudents = function() {
+            var q = (vm.filterStudentsQuery || '').trim().toLowerCase();
+            var name;
+            if (q) {
+                vm.filteredStudents = vm.students.filter(function(student) {
+                    name = (student.FirstName + ' ' + student.LastName).toLowerCase();
+                    return name.indexOf(q) > -1;
+                });
+            } else {
+                vm.filteredStudents = angular.copy(vm.students);
+            }
+        };
 
-		/**
-		 * Implementations
-		 */
+        /**
+         * Initialization
+         */
 
-		function activate() {
-			// Initialization code goes here
-		}
-	}
+        activate();
+
+        /**
+         * Implementations
+         */
+
+        function activate() {
+            // Initialization code goes here
+            vm.loadingStudents = true;
+            return StudentsService.getStudents().then(function(data) {
+                if (angular.isArray(data)) {
+                    vm.students = data;
+                    vm.filteredStudents = angular.copy(data);
+                }
+            }).catch(function(response) {
+                alert("Unable to load the student data. Try again.");
+            }).finally(function() {
+                vm.loadingStudents = false;
+            });
+        }
+
+    }
 })();
